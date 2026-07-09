@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hzx-greedy.github.io/HZXPro/sitemap.xml
