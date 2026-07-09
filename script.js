@@ -452,7 +452,7 @@ Layanan: ${layanan}
 Pesan:
 ${pesan}`;
 
-        window.open(`https://wa.me/6282110757763?text=${encodeURIComponent(text)}`, '_blank');
+        window.open(`https://wa.me/6282128297825?text=${encodeURIComponent(text)}`, '_blank');
     });
 }
 
