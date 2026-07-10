@@ -53,7 +53,9 @@ const setActiveLink = () => {
     });
 };
 
-window.addEventListener('scroll', setActiveLink, { passive: true });
+window.addEventListener('scroll', setActiveLink, {
+    passive: true
+});
 setActiveLink();
 
 // NAVBAR SCROLL STATE
@@ -341,7 +343,7 @@ if (testiTrack && testiViewport && testiCarousel) {
         return 3;
     }
 
-    let perSlide = getPerSlide();
+    let perSlide = 3;
     let currentSlide = 0;
     let totalSlides = 1;
     let autoplayTimer = null;
@@ -468,8 +470,10 @@ if (testiTrack && testiViewport && testiCarousel) {
         }, 200);
     });
 
-    renderSlides();
-    startAutoplay();
+    requestAnimationFrame(() => {
+        renderSlides();
+        startAutoplay();
+    });
 }
 
 // CONTACT FORM — sends to WhatsApp
@@ -557,7 +561,7 @@ ${pesan}`;
 const crosshair = document.getElementById('customCrosshair');
 
 if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    
+
     // Gerakan kursor super responsif (tanpa delay biar presisi kayak pointer penembak)
     window.addEventListener('mousemove', function (e) {
         crosshair.style.left = `${e.clientX}px`;
@@ -566,7 +570,7 @@ if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
 
     // Cari semua tombol, link, dan item portofolio di web agency kamu
     const targets = document.querySelectorAll('a, button, .neo-btn, .portfolio-item, input, select, textarea');
-    
+
     targets.forEach(item => {
         item.addEventListener('mouseenter', () => {
             crosshair.classList.add('hovering');
