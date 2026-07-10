@@ -931,7 +931,7 @@ section {
 }
 
 /* Styling khusus untuk Service Card "Need Something Else" */
-.service-card.reveal.reveal-d4 {
+.service-card.reveal-d4 {
     grid-column: span 2; /* Tetap panjang makan 2 kolom */
     
     /* Ganti warna biar senada dengan web, bukan hitam */
