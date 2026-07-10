@@ -185,7 +185,7 @@ if (heroStack && !prefersReducedMotion && window.matchMedia('(hover: hover) and 
         const rect = heroVisual.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
-        heroStack.style.transform = `perspective(1000px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
+        heroStack.style.transform = `perspective(1000px) rotateY(${x * 18}deg) rotateX(${-y * 18}deg)`;
     });
     heroVisual.addEventListener('mouseleave', () => {
         heroStack.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
@@ -506,3 +506,27 @@ ${pesan}`;
 
     requestAnimationFrame(step);
 })();
+
+// cursor custom
+const crosshair = document.getElementById('customCrosshair');
+
+if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    
+    // Gerakan kursor super responsif (tanpa delay biar presisi kayak pointer penembak)
+    window.addEventListener('mousemove', function (e) {
+        crosshair.style.left = `${e.clientX}px`;
+        crosshair.style.top = `${e.clientY}px`;
+    });
+
+    // Cari semua tombol, link, dan item portofolio di web agency kamu
+    const targets = document.querySelectorAll('a, button, .neo-btn, .portfolio-item, input, select, textarea');
+    
+    targets.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            crosshair.classList.add('hovering');
+        });
+        item.addEventListener('mouseleave', () => {
+            crosshair.classList.remove('hovering');
+        });
+    });
+}

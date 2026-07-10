@@ -2448,6 +2448,90 @@ section {
     margin-top: 20px;
 }
 
+/* ===== CUSTOM CROSSHAIR CURSOR FOR STUDIO (DIFFERENCE MODE) ===== */
+@media (hover: hover) and (pointer: fine) {
+    body {
+        cursor: none;
+    }
+
+    .custom-crosshair {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 30px;
+        height: 30px;
+        pointer-events: none; /* Biar tetap bisa ngeklik elemen di bawahnya */
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translate(-50%, -50%);
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        
+        /* INI KUNCINYA: Bikin warna invert otomatis & teks tetap terbaca */
+        mix-blend-mode: difference;
+    }
+
+    /* Garis Horizontal (+) - Lebih Tebal */
+    .ch-line-h {
+        position: absolute;
+        width: 18px;
+        height: 3px; /* Ditebalkan */
+        background: #fff; /* WAJIB PUTIH biar di-invert jadi hitam di bg terang */
+        transition: width 0.25s ease, background 0.25s ease;
+    }
+
+    /* Garis Vertical (+) - Lebih Tebal */
+    .ch-line-v {
+        position: absolute;
+        width: 3px; /* Ditebalkan */
+        height: 18px;
+        background: #fff; /* WAJIB PUTIH */
+        transition: height 0.25s ease, background 0.25s ease;
+    }
+
+    /* Lingkaran pembidik (Awalnya ngumpet) */
+    .ch-circle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        border: 3px dashed #fff; /* Ditebalkan jadi 3px & warna putih */
+        border-radius: 50%;
+        opacity: 0;
+        transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                    height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                    opacity 0.2s ease;
+    }
+
+    /* ===== EFEK SAAT HOVER TOMBOL / LINK ===== */
+    /* Muter 45 derajat (jadi bentuk X) dan membesar dikit */
+    .custom-crosshair.hovering {
+        transform: translate(-50%, -50%) rotate(45deg) scale(1.1);
+    }
+
+    /* Garis silang di tengah menyusut */
+    .custom-crosshair.hovering .ch-line-h {
+        width: 8px; 
+    }
+    .custom-crosshair.hovering .ch-line-v {
+        height: 8px;
+    }
+
+    /* Lingkaran pembidik keluar dan muter */
+    .custom-crosshair.hovering .ch-circle {
+        width: 40px; /* Dibuat sedikit lebih besar */
+        height: 40px;
+        opacity: 1;
+        animation: targetRotate 4s linear infinite;
+    }
+}
+
+/* Animasi putar pelan buat lingkaran putus-putusnya */
+@keyframes targetRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 @media (max-width: 900px) {
     .channels-grid {
         grid-template-columns: 1fr;
