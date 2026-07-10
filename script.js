@@ -15,10 +15,15 @@ const spySections = Array.from(navAnchorLinks)
     .map(link => document.querySelector(link.getAttribute('href')))
     .filter(Boolean);
 
-let sectionOffsets = spySections.map(section => ({
-    id: section.id,
-    offset: section.offsetTop
-}));
+let sectionOffsets = [];
+// Tunda pembacaan offsetTop pertama ke frame berikutnya agar tidak
+// memaksa layout browser di tengah eksekusi script (forced reflow).
+requestAnimationFrame(() => {
+    sectionOffsets = spySections.map(section => ({
+        id: section.id,
+        offset: section.offsetTop
+    }));
+});
 
 // 2. Fungsi update untuk resize agar offset tetap akurat
 window.addEventListener('resize', () => {
@@ -370,12 +375,22 @@ if (testiTrack && testiViewport && testiCarousel) {
     }
 
     function updateTrack(animate) {
-        if (animate === false) testiTrack.style.transition = 'none';
-        testiTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-        Array.from(testiDotsWrap.children).forEach((d, i) => d.classList.toggle('active', i === currentSlide));
         if (animate === false) {
-            void testiTrack.offsetHeight;
-            testiTrack.style.transition = '';
+            // Ganti trik "void offsetHeight" (forced reflow) dengan double rAF:
+            // browser sempat menggambar frame tanpa transition dulu, baru
+            // transition diaktifkan lagi di frame berikutnya — tanpa memaksa
+            // layout dibaca secara sinkron.
+            testiTrack.style.transition = 'none';
+            testiTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            Array.from(testiDotsWrap.children).forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    testiTrack.style.transition = '';
+                });
+            });
+        } else {
+            testiTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            Array.from(testiDotsWrap.children).forEach((d, i) => d.classList.toggle('active', i === currentSlide));
         }
     }
 
@@ -494,43 +509,48 @@ ${pesan}`;
     if (!track || !marqueeStrip || track.dataset.smoothMarquee === 'true') return;
     track.dataset.smoothMarquee = 'true';
 
-    const baseItems = Array.from(track.children).map(el => el.cloneNode(true));
-    const baseWidth = track.scrollWidth || 1;
+    // Tunda seluruh pengukuran & setup ke frame berikutnya, biar tidak
+    // memaksa layout browser di tengah eksekusi script (forced reflow)
+    // akibat DOM yang sudah "kotor" dari script-script sebelumnya.
+    requestAnimationFrame(() => {
+        const baseItems = Array.from(track.children).map(el => el.cloneNode(true));
+        const baseWidth = track.scrollWidth || 1;
 
-    // Keep the track at least one full base-set wider than the viewport, so it
-    // can scroll indefinitely without ever exposing a gap on the right edge.
-    const targetWidth = Math.max(marqueeStrip.clientWidth, window.innerWidth) + baseWidth;
-    const repeatsNeeded = Math.max(1, Math.ceil(targetWidth / baseWidth));
-    for (let i = 1; i < repeatsNeeded; i++) {
-        baseItems.forEach(el => track.appendChild(el.cloneNode(true)));
-    }
+        // Keep the track at least one full base-set wider than the viewport, so it
+        // can scroll indefinitely without ever exposing a gap on the right edge.
+        const targetWidth = Math.max(marqueeStrip.clientWidth, window.innerWidth) + baseWidth;
+        const repeatsNeeded = Math.max(1, Math.ceil(targetWidth / baseWidth));
+        for (let i = 1; i < repeatsNeeded; i++) {
+            baseItems.forEach(el => track.appendChild(el.cloneNode(true)));
+        }
 
-    // Hand control over from the CSS keyframe to the JS loop below.
-    track.style.animation = 'none';
+        // Hand control over from the CSS keyframe to the JS loop below.
+        track.style.animation = 'none';
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) {
-        track.style.transform = 'translate3d(0, 0, 0)';
-        return;
-    }
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) {
+            track.style.transform = 'translate3d(0, 0, 0)';
+            return;
+        }
 
-    const SPEED = 40; // pixels per second
-    let pos = 0;
-    let lastTime = null;
+        const SPEED = 40; // pixels per second
+        let pos = 0;
+        let lastTime = null;
 
-    function step(timestamp) {
-        if (lastTime === null) lastTime = timestamp;
-        const deltaSeconds = (timestamp - lastTime) / 1000;
-        lastTime = timestamp;
+        function step(timestamp) {
+            if (lastTime === null) lastTime = timestamp;
+            const deltaSeconds = (timestamp - lastTime) / 1000;
+            lastTime = timestamp;
 
-        pos -= SPEED * deltaSeconds;
-        if (pos <= -baseWidth) pos += baseWidth; // wrap seamlessly, content repeats every baseWidth px
+            pos -= SPEED * deltaSeconds;
+            if (pos <= -baseWidth) pos += baseWidth; // wrap seamlessly, content repeats every baseWidth px
 
-        track.style.transform = `translate3d(${pos}px, 0, 0)`;
+            track.style.transform = `translate3d(${pos}px, 0, 0)`;
+            requestAnimationFrame(step);
+        }
+
         requestAnimationFrame(step);
-    }
-
-    requestAnimationFrame(step);
+    });
 })();
 
 // cursor custom
