@@ -930,6 +930,71 @@ section {
     font-weight: 450;
 }
 
+/* Styling khusus untuk Service Card "Need Something Else" */
+.service-card.reveal-d4 {
+    grid-column: span 2; /* Tetap panjang makan 2 kolom */
+    
+    /* Ganti warna biar senada dengan web, bukan hitam */
+    background: var(--paper-soft); 
+    border: 2px dashed #d1d1cf; /* Border putus-putus biar nggak 'mati' */
+    
+    color: var(--ink);
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 24px;
+    padding: 32px 36px !important;
+    transition: all 0.4s var(--ease);
+}
+
+.service-card.reveal-d4:hover {
+    background: var(--accent); /* Hover jadi kuning HZXPro */
+    border-style: solid; /* Pas di-hover border jadi solid biar kerasa diklik */
+    border-color: var(--ink);
+    box-shadow: 0 16px 30px -12px rgba(255, 212, 59, .4);
+    transform: translateY(-4px);
+}
+
+/* Modifikasi Icon dalam card khusus */
+.service-card.reveal-d4 .service-icon {
+    margin-bottom: 0;
+    width: 56px;
+    height: 56px;
+    background: #fff; /* Putih bersih biar icon pop-up */
+    border: 1px solid var(--line-on-light);
+    color: var(--ink);
+    flex-shrink: 0;
+    transition: all 0.35s ease;
+}
+
+.service-card.reveal-d4:hover .service-icon {
+    background: var(--ink);
+    color: var(--accent);
+}
+
+/* Styling Teks */
+.service-card.reveal-d4 h3 {
+    margin-bottom: 4px;
+    font-size: 1.25rem;
+}
+
+.service-card.reveal-d4 p {
+    color: var(--muted-on-light);
+    margin: 0;
+    max-width: 90%;
+}
+
+/* Responsif untuk HP */
+@media (max-width: 900px) {
+    .service-card.reveal-d4 {
+        grid-column: span 1;
+        flex-direction: column !important;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 28px !important;
+    }
+}
+
 /* =========================================================
    WHY CHOOSE — dark
 ========================================================= */
@@ -1754,6 +1819,21 @@ section {
 .contact-form button {
     margin-top: 6px;
 }
+/* Styling form agar lebih nyaman di mata */
+.contact-form input::placeholder,
+.contact-form textarea::placeholder,
+.contact-form select {
+    color: var(--muted-on-light);
+    font-size: 0.92rem;
+}
+
+/* Sedikit efek saat user sedang mengetik */
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--accent);
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
 
 /* =========================================================
    WHATSAPP FLOAT + BACK TO TOP
@@ -1839,6 +1919,20 @@ section {
     cursor: pointer;
     transform: rotate(45deg);
     flex-shrink: 0;
+}
+/* Animasi halus agar tombol WA terlihat 'hidup' tanpa mengganggu */
+.wa-float {
+    animation: waPulse 3s ease-in-out infinite;
+}
+
+@keyframes waPulse {
+    0%, 100% {
+        box-shadow: 0 16px 32px -12px rgba(255, 212, 59, .7);
+    }
+    50% {
+        box-shadow: 0 16px 32px -12px rgba(255, 212, 59, .3);
+        transform: scale(0.98);
+    }
 }
 
 /* --- RESPONSIVE UNTUK HP --- */

@@ -40,27 +40,23 @@
 
     <!-- Structured Data -->
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "ProfessionalService",
-            "name": "HZXPro",
-            "description": "Independent digital studio building modern, fast, and reliable websites for businesses and personal brands.",
-            "url": "hzxprostudio.github.io",
-            "image": "hzxprostudio.github.io/asset/logo.png",
-            "priceRange": "Rp399.000 - Rp2.500.000+",
-            "areaServed": "ID",
-            "founder": {
-                "@type": "Person",
-                "name": "Fathahaz Nur Ramdhani"
-            },
-            "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Indramayu",
-                "addressCountry": "ID"
-            },
-            "sameAs": ["https://instagram.com/hzxprostudio", "https://github.com/hzxprostudio"]
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "HZXPro",
+        "description": "Digital studio building modern, fast, and reliable websites for businesses and personal brands.",
+        "url": "https://hzxprostudio.github.io/",
+        "founder": {
+            "@type": "Person",
+            "name": "Fathahaz Nur Ramdhani"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Indramayu",
+            "addressCountry": "ID"
         }
-    </script>
+    }
+</script>
 </head>
 
 <body>
@@ -580,7 +576,8 @@
                     <p class="founder-bio">A passionate web developer focused on creating modern, responsive, and
                         high-performance websites for businesses and personal brands.</p>
                     <div class="founder-actions">
-                        <a href="https://fathahazz.github.io/" class="btn btn-dark btn-sm" target="_blank">View Portfolio</a>
+                        <a href="https://fathahazz.github.io/" class="btn btn-dark btn-sm" target="_blank">View
+                            Portfolio</a>
                         <a href="https://wa.me/6282110757763" target="_blank" rel="noopener"
                             class="btn btn-ghost btn-sm">Contact Founder</a>
                     </div>
@@ -747,16 +744,16 @@
                     <input type="text" id="nama" placeholder="Name *" required />
                     <input type="email" id="email" placeholder="Email *" required />
                     <input type="text" id="wa" placeholder="WhatsApp Number (optional)" />
-                    <select id="layanan">
-                        <option value="">— Select a Service —</option>
-                        <option>Website Development</option>
-                        <option>Company Profile</option>
-                        <option>Landing Page</option>
-                        <option>Dashboard</option>
-                        <option>UI/UX Design</option>
-                        <option>Maintenance</option>
-                        <option>Automation</option>
-                        <option>Other</option>
+                    <select id="layanan" required>
+                        <option value="">— What can we help you with? —</option>
+                        <option>Modern Web Development (Scalable & Fast)</option>
+                        <option>Professional Company Profile</option>
+                        <option>High-Converting Landing Page</option>
+                        <option>Custom Admin Dashboard</option>
+                        <option>Premium UI/UX Design</option>
+                        <option>Maintenance & Support</option>
+                        <option>Process Automation</option>
+                        <option>Something Else (Let's discuss)</option>
                     </select>
                     <textarea id="pesan" placeholder="Tell us about your project..." required></textarea>
                     <button type="submit" class="btn btn-primary">Send Message</button>
