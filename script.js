@@ -1,11 +1,17 @@
 // SCROLL PROGRESS BAR
 const scrollProgress = document.getElementById('scrollProgress');
+let docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+// Update tinggi dokumen hanya saat konten berubah atau layar di-resize
+window.addEventListener('resize', () => {
+    docHeight = document.documentElement.scrollHeight - window.innerHeight;
+});
+
 window.addEventListener('scroll', () => {
     const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
     scrollProgress.style.width = pct + '%';
-});
+}, { passive: true });
 
 // NAVBAR ACTIVE STATE (scroll-spy)
 const navAnchorLinks = document.querySelectorAll('.nav-links a[href^="#"]');

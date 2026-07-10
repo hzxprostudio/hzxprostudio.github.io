@@ -1,8 +1,10 @@
 /* Scrollbar */
 html {
     scroll-behavior: smooth;
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: var(--ink) var(--paper-soft); /* Firefox */
+    scrollbar-width: thin;
+    /* Firefox */
+    scrollbar-color: var(--ink) var(--paper-soft);
+    /* Firefox */
 }
 
 /* WebKit (Chrome, Edge, Safari, Opera) */
@@ -877,6 +879,7 @@ section {
         animation: none;
     }
 }
+
 /* =========================================================
    SERVICES
 ========================================================= */
@@ -932,12 +935,14 @@ section {
 
 /* Styling khusus untuk Service Card "Need Something Else" */
 .service-card.reveal-d4 {
-    grid-column: span 2; /* Tetap panjang makan 2 kolom */
-    
+    grid-column: span 2;
+    /* Tetap panjang makan 2 kolom */
+
     /* Ganti warna biar senada dengan web, bukan hitam */
-    background: var(--paper-soft); 
-    border: 2px dashed #d1d1cf; /* Border putus-putus biar nggak 'mati' */
-    
+    background: var(--paper-soft);
+    border: 2px dashed #d1d1cf;
+    /* Border putus-putus biar nggak 'mati' */
+
     color: var(--ink);
     display: flex;
     flex-direction: row !important;
@@ -948,8 +953,10 @@ section {
 }
 
 .service-card.reveal-d4:hover {
-    background: var(--accent); /* Hover jadi kuning HZXPro */
-    border-style: solid; /* Pas di-hover border jadi solid biar kerasa diklik */
+    background: var(--accent);
+    /* Hover jadi kuning HZXPro */
+    border-style: solid;
+    /* Pas di-hover border jadi solid biar kerasa diklik */
     border-color: var(--ink);
     box-shadow: 0 16px 30px -12px rgba(255, 212, 59, .4);
     transform: translateY(-4px);
@@ -960,7 +967,8 @@ section {
     margin-bottom: 0;
     width: 56px;
     height: 56px;
-    background: #fff; /* Putih bersih biar icon pop-up */
+    background: #fff;
+    /* Putih bersih biar icon pop-up */
     border: 1px solid var(--line-on-light);
     color: var(--ink);
     flex-shrink: 0;
@@ -1331,10 +1339,12 @@ section {
     border: none;
     cursor: pointer;
     transition: background .25s ease, width .25s ease;
-    
+
     /* TAMBAHKAN DUA BARIS INI */
-    padding: 12px; /* Memberikan area klik yang lebih luas */
-    background-clip: content-box; /* Memastikan background tetap kecil */
+    padding: 12px;
+    /* Memberikan area klik yang lebih luas */
+    background-clip: content-box;
+    /* Memastikan background tetap kecil */
 }
 
 .testi-dots .dot.active {
@@ -1826,6 +1836,7 @@ section {
 .contact-form button {
     margin-top: 6px;
 }
+
 /* Styling form agar lebih nyaman di mata */
 .contact-form input::placeholder,
 .contact-form textarea::placeholder,
@@ -1839,7 +1850,7 @@ section {
 .contact-form textarea:focus {
     border-color: var(--accent);
     background: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* =========================================================
@@ -1853,15 +1864,18 @@ section {
     z-index: 999;
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* Rata kanan */
+    align-items: flex-end;
+    /* Rata kanan */
 }
 
 /* Tooltip posisinya absolut naik ke atas */
 .wa-tooltip {
     position: absolute;
-    bottom: calc(100% + 10px); /* 100% tinggi tombol + 15px jarak */
-    right: 0; /* Rata kanan sejajar dengan sisi kanan tombol WA */
-    
+    bottom: calc(100% + 10px);
+    /* 100% tinggi tombol + 15px jarak */
+    right: 0;
+    /* Rata kanan sejajar dengan sisi kanan tombol WA */
+
     background: var(--ink);
     color: #fff;
     padding: 10px 16px;
@@ -1871,7 +1885,7 @@ section {
     display: flex;
     align-items: center;
     gap: 10px;
-    
+
     opacity: 0;
     /* Mulai dari agak bawah untuk efek melayang saat muncul */
     transform: translateY(10px) scale(0.9);
@@ -1884,27 +1898,34 @@ section {
 .wa-tooltip::before {
     content: '';
     position: absolute;
-    bottom: -11px; /* Ditarik lebih ke bawah untuk jadi garis luar */
-    right: 19px; /* Posisi tengah tombol WA (28px) - setengah lebar panah (9px) */
+    bottom: -11px;
+    /* Ditarik lebih ke bawah untuk jadi garis luar */
+    right: 19px;
+    /* Posisi tengah tombol WA (28px) - setengah lebar panah (9px) */
     width: 0;
     height: 0;
     border-left: 9px solid transparent;
     border-right: 9px solid transparent;
-    border-top: 10px solid #1a1a1a; /* Warna garis luarnya (sesuaikan kalau perlu) */
+    border-top: 10px solid #1a1a1a;
+    /* Warna garis luarnya (sesuaikan kalau perlu) */
 }
 
 /* --- ISI / FILL PANAH (::after) --- */
 .wa-tooltip::after {
     content: '';
     position: absolute;
-    bottom: -8px; /* Posisinya agak naik sedikit biar numpuk di atas ::before */
-    right: 20px; /* Posisi tengah tombol WA (28px) - setengah lebar panah (8px) */
+    bottom: -8px;
+    /* Posisinya agak naik sedikit biar numpuk di atas ::before */
+    right: 20px;
+    /* Posisi tengah tombol WA (28px) - setengah lebar panah (8px) */
     width: 0;
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 9px solid var(--ink); /* Warna isi panah, ngikutin warna background tooltip */
-    z-index: 1; /* Pastikan tumpukannya di atas ::before */
+    border-top: 9px solid var(--ink);
+    /* Warna isi panah, ngikutin warna background tooltip */
+    z-index: 1;
+    /* Pastikan tumpukannya di atas ::before */
 }
 
 .wa-tooltip.show {
@@ -1927,15 +1948,19 @@ section {
     transform: rotate(45deg);
     flex-shrink: 0;
 }
+
 /* Animasi halus agar tombol WA terlihat 'hidup' tanpa mengganggu */
 .wa-float {
     animation: waPulse 3s ease-in-out infinite;
 }
 
 @keyframes waPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 16px 32px -12px rgba(255, 212, 59, .7);
     }
+
     50% {
         box-shadow: 0 16px 32px -12px rgba(255, 212, 59, .3);
         transform: scale(0.98);
@@ -1946,10 +1971,13 @@ section {
 /* Biar panahnya tetep di tengah saat tombol WA mengecil jadi 48px di HP */
 @media (max-width: 640px) {
     .wa-tooltip::before {
-        right: 15px; /* Tengah tombol (24px) - 9px */
+        right: 15px;
+        /* Tengah tombol (24px) - 9px */
     }
+
     .wa-tooltip::after {
-        right: 16px; /* Tengah tombol (24px) - 8px */
+        right: 16px;
+        /* Tengah tombol (24px) - 8px */
     }
 
     .wa-wrap {
@@ -2238,6 +2266,7 @@ section {
         right: -6px;
     }
 }
+
 /* =========================================================
    SUBPAGES — Privacy / Support / Sitemap
 ========================================================= */
@@ -2561,14 +2590,15 @@ section {
         left: 0;
         width: 30px;
         height: 30px;
-        pointer-events: none; /* Biar tetap bisa ngeklik elemen di bawahnya */
+        pointer-events: none;
+        /* Biar tetap bisa ngeklik elemen di bawahnya */
         z-index: 9999;
         display: flex;
         align-items: center;
         justify-content: center;
         transform: translate(-50%, -50%);
         transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        
+
         /* INI KUNCINYA: Bikin warna invert otomatis & teks tetap terbaca */
         mix-blend-mode: difference;
     }
@@ -2577,17 +2607,21 @@ section {
     .ch-line-h {
         position: absolute;
         width: 18px;
-        height: 3px; /* Ditebalkan */
-        background: #fff; /* WAJIB PUTIH biar di-invert jadi hitam di bg terang */
+        height: 3px;
+        /* Ditebalkan */
+        background: #fff;
+        /* WAJIB PUTIH biar di-invert jadi hitam di bg terang */
         transition: width 0.25s ease, background 0.25s ease;
     }
 
     /* Garis Vertical (+) - Lebih Tebal */
     .ch-line-v {
         position: absolute;
-        width: 3px; /* Ditebalkan */
+        width: 3px;
+        /* Ditebalkan */
         height: 18px;
-        background: #fff; /* WAJIB PUTIH */
+        background: #fff;
+        /* WAJIB PUTIH */
         transition: height 0.25s ease, background 0.25s ease;
     }
 
@@ -2596,12 +2630,13 @@ section {
         position: absolute;
         width: 4px;
         height: 4px;
-        border: 3px dashed #fff; /* Ditebalkan jadi 3px & warna putih */
+        border: 3px dashed #fff;
+        /* Ditebalkan jadi 3px & warna putih */
         border-radius: 50%;
         opacity: 0;
-        transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                    height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                    opacity 0.2s ease;
+        transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+            height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+            opacity 0.2s ease;
     }
 
     /* ===== EFEK SAAT HOVER TOMBOL / LINK ===== */
@@ -2612,15 +2647,17 @@ section {
 
     /* Garis silang di tengah menyusut */
     .custom-crosshair.hovering .ch-line-h {
-        width: 8px; 
+        width: 8px;
     }
+
     .custom-crosshair.hovering .ch-line-v {
         height: 8px;
     }
 
     /* Lingkaran pembidik keluar dan muter */
     .custom-crosshair.hovering .ch-circle {
-        width: 40px; /* Dibuat sedikit lebih besar */
+        width: 40px;
+        /* Dibuat sedikit lebih besar */
         height: 40px;
         opacity: 1;
         animation: targetRotate 4s linear infinite;
@@ -2629,8 +2666,13 @@ section {
 
 /* Animasi putar pelan buat lingkaran putus-putusnya */
 @keyframes targetRotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (max-width: 900px) {
@@ -2663,4 +2705,10 @@ section {
     .sitemap-col {
         padding: 26px 22px;
     }
+}
+
+
+/* Tambahkan di style.css */
+.custom-crosshair {
+    will-change: transform;
 }
