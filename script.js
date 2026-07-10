@@ -1,34 +1,54 @@
 // SCROLL PROGRESS BAR
 const scrollProgress = document.getElementById('scrollProgress');
-let docHeight = document.documentElement.scrollHeight - window.innerHeight;
-
-// Update tinggi dokumen hanya saat konten berubah atau layar di-resize
-window.addEventListener('resize', () => {
-    docHeight = document.documentElement.scrollHeight - window.innerHeight;
-});
-
 window.addEventListener('scroll', () => {
     const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
     scrollProgress.style.width = pct + '%';
-}, { passive: true });
+});
 
-// NAVBAR ACTIVE STATE (scroll-spy)
+// NAVBAR ACTIVE STATE (Optimized)
 const navAnchorLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+// 1. Ambil semua section dan simpan posisinya dalam array (caching)
 const spySections = Array.from(navAnchorLinks)
     .map(link => document.querySelector(link.getAttribute('href')))
     .filter(Boolean);
+
+let sectionOffsets = spySections.map(section => ({
+    id: section.id,
+    offset: section.offsetTop
+}));
+
+// 2. Fungsi update untuk resize agar offset tetap akurat
+window.addEventListener('resize', () => {
+    sectionOffsets = spySections.map(section => ({
+        id: section.id,
+        offset: section.offsetTop
+    }));
+});
+
 const setActiveLink = () => {
-    let currentId = null;
-    const scrollPos = window.scrollY + 140;
-    spySections.forEach(section => {
-        if (section.offsetTop <= scrollPos) currentId = section.id;
-    });
-    navAnchorLinks.forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+    // 3. Gunakan requestAnimationFrame untuk sinkronisasi dengan refresh rate layar
+    window.requestAnimationFrame(() => {
+        const scrollPos = window.scrollY + 140;
+        let currentId = null;
+
+        // 4. Cari section berdasarkan cache, bukan menghitung offsetTop setiap scroll
+        for (let i = 0; i < sectionOffsets.length; i++) {
+            if (sectionOffsets[i].offset <= scrollPos) {
+                currentId = sectionOffsets[i].id;
+            }
+        }
+
+        navAnchorLinks.forEach(link => {
+            const isActive = link.getAttribute('href') === '#' + currentId;
+            link.classList.toggle('active', isActive);
+        });
     });
 };
-window.addEventListener('scroll', setActiveLink);
+
+window.addEventListener('scroll', setActiveLink, { passive: true });
 setActiveLink();
 
 // NAVBAR SCROLL STATE
