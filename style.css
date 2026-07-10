@@ -1758,17 +1758,23 @@ section {
 /* =========================================================
    WHATSAPP FLOAT + BACK TO TOP
 ========================================================= */
+/* Pembungkus utama, posisinya di pojok kanan bawah layar */
 .wa-wrap {
     position: fixed;
-    bottom: 26px;
-    right: 26px;
-    z-index: 400;
+    bottom: 28px;
+    right: 28px;
+    z-index: 999;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    align-items: flex-end; /* Rata kanan */
 }
 
+/* Tooltip posisinya absolut naik ke atas */
 .wa-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px); /* 100% tinggi tombol + 15px jarak */
+    right: 0; /* Rata kanan sejajar dengan sisi kanan tombol WA */
+    
     background: var(--ink);
     color: #fff;
     padding: 10px 16px;
@@ -1778,16 +1784,45 @@ section {
     display: flex;
     align-items: center;
     gap: 10px;
+    
     opacity: 0;
-    transform: translateX(8px);
+    /* Mulai dari agak bawah untuk efek melayang saat muncul */
+    transform: translateY(10px) scale(0.9);
     pointer-events: none;
     transition: opacity .35s ease, transform .35s ease;
     white-space: nowrap;
 }
 
+/* --- OUTLINE / BORDER PANAH (::before) --- */
+.wa-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: -11px; /* Ditarik lebih ke bawah untuk jadi garis luar */
+    right: 19px; /* Posisi tengah tombol WA (28px) - setengah lebar panah (9px) */
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 10px solid #1a1a1a; /* Warna garis luarnya (sesuaikan kalau perlu) */
+}
+
+/* --- ISI / FILL PANAH (::after) --- */
+.wa-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; /* Posisinya agak naik sedikit biar numpuk di atas ::before */
+    right: 20px; /* Posisi tengah tombol WA (28px) - setengah lebar panah (8px) */
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 9px solid var(--ink); /* Warna isi panah, ngikutin warna background tooltip */
+    z-index: 1; /* Pastikan tumpukannya di atas ::before */
+}
+
 .wa-tooltip.show {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) scale(1);
     pointer-events: auto;
 }
 
@@ -1804,6 +1839,32 @@ section {
     cursor: pointer;
     transform: rotate(45deg);
     flex-shrink: 0;
+}
+
+/* --- RESPONSIVE UNTUK HP --- */
+/* Biar panahnya tetep di tengah saat tombol WA mengecil jadi 48px di HP */
+@media (max-width: 640px) {
+    .wa-tooltip::before {
+        right: 15px; /* Tengah tombol (24px) - 9px */
+    }
+    .wa-tooltip::after {
+        right: 16px; /* Tengah tombol (24px) - 8px */
+    }
+
+    .wa-wrap {
+        bottom: 18px;
+        right: 18px;
+    }
+
+    .wa-float {
+        width: 48px;
+        height: 48px;
+    }
+
+    .wa-tooltip {
+        font-size: 0.74rem;
+        padding: 8px 12px;
+    }
 }
 
 .wa-float {
