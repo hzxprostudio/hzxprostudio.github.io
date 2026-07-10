@@ -1331,12 +1331,19 @@ section {
     border: none;
     cursor: pointer;
     transition: background .25s ease, width .25s ease;
+    
+    /* TAMBAHKAN DUA BARIS INI */
+    padding: 12px; /* Memberikan area klik yang lebih luas */
+    background-clip: content-box; /* Memastikan background tetap kecil */
 }
 
 .testi-dots .dot.active {
     background: var(--ink);
     width: 22px;
     border-radius: 4px;
+    /* Aktifkan juga padding untuk dot yang aktif agar tetap konsisten */
+    padding: 12px;
+    background-clip: content-box;
 }
 
 /* =========================================================
