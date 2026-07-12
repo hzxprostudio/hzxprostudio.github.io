@@ -1158,6 +1158,46 @@ section {
     margin-top: 44px;
 }
 
+/* FEATURED WORKS — Filter Tabs */
+.works-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.filter-btn {
+    padding: 9px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line-on-light);
+    background: var(--paper-soft);
+    color: var(--ink-soft, #666);
+    font-size: .88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+}
+
+.filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.filter-btn.is-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+/* Beda visual buat demo tag — biar keliatan beda dari client project asli */
+.work-tag--demo {
+    color: #9b9b9b;
+}
+
+#demoGrid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
 /* =========================================================
    PROCESS — dark timeline
 ========================================================= */
@@ -2142,7 +2182,8 @@ section {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .works-grid {
+    .works-grid,
+    #demoGrid {
         grid-template-columns: 1fr;
     }
 

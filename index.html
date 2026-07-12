@@ -44,7 +44,7 @@
         content="Independent digital studio building modern, fast, and reliable websites for businesses and personal brands." />
     <meta name="twitter:image" content="https://hzxprostudio.github.io/asset/logo.png" />
 
-    
+
     <link rel="icon" type="image/png" href="asset/favicon/favicon-96x96.png" />
     <link rel="apple-touch-icon" href="asset/favicon/apple-touch-icon.png" />
 
@@ -453,37 +453,50 @@
                     <p class="section-sub">A few recent projects — real products, shipped for real clients.</p>
                     <p style="color: grey;">*Click "View Project" to see more details.</p>
                 </div>
+                <div class="works-filter reveal" id="projectFilterTabs" role="tablist"
+                    aria-label="Filter proyek berdasarkan kategori">
+                    <button class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+                    <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">Web Dev</button>
+                    <button class="filter-btn" data-filter="mobile" role="tab" aria-selected="false">Mobile App</button>
+                    <button class="filter-btn" data-filter="ai" role="tab" aria-selected="false">AI &
+                        Automation</button>
+                    <button class="filter-btn" data-filter="cyber" role="tab" aria-selected="false">Cyber
+                        Security</button>
+                </div>
                 <div class="works-grid">
-                    <div class="work-card reveal">
+                    <div class="work-card reveal" data-category="web">
                         <img src="asset/p1.webp" alt="Avenixa Labs project preview" width="1000" height="452"
                             loading="lazy" decoding="async" />
                         <div class="work-overlay">
                             <span class="work-tag">Web — 2026</span>
                             <h3>Avenixa Labs</h3>
-                            <a href="https://avenixalabs.my.id/" class="work-link" target="_blank" rel="noopener" aria-label="View Avenixa Labs project">View
+                            <a href="https://avenixalabs.my.id/" class="work-link" target="_blank" rel="noopener"
+                                aria-label="View Avenixa Labs project">View
                                 Project <svg class="ic" width="14" height="14">
                                     <use href="#ic-arrow-right" /></svg></a>
                         </div>
                     </div>
-                    <div class="work-card reveal reveal-d1">
+                    <div class="work-card reveal reveal-d1" data-category="web">
                         <img src="asset/p2.webp" alt="Hazz Parcel project preview" width="1000" height="458"
                             loading="lazy" decoding="async" />
                         <div class="work-overlay">
                             <span class="work-tag">Web — 2026</span>
                             <h3>Hazz Parcel</h3>
                             <a href="https://hzx-greedy.github.io/HAZZPARCEL" class="work-link" target="_blank"
-                                rel="noopener" aria-label="View Hazz Parcel project">View Project <svg class="ic" width="14" height="14">
+                                rel="noopener" aria-label="View Hazz Parcel project">View Project <svg class="ic"
+                                    width="14" height="14">
                                     <use href="#ic-arrow-right" /></svg></a>
                         </div>
                     </div>
-                    <div class="work-card reveal reveal-d2">
+                    <div class="work-card reveal reveal-d2" data-category="web">
                         <img src="asset/p3.webp" alt="POS Demo project preview" width="1000" height="453" loading="lazy"
                             decoding="async" />
                         <div class="work-overlay">
                             <span class="work-tag">Web App — 2026</span>
                             <h3>POS Demo</h3>
                             <a href="https://hzx-greedy.github.io/POSDemo/" class="work-link" target="_blank"
-                                rel="noopener" aria-label="View POS Demo project">View Project <svg class="ic" width="14" height="14">
+                                rel="noopener" aria-label="View POS Demo project">View Project <svg class="ic"
+                                    width="14" height="14">
                                     <use href="#ic-arrow-right" /></svg></a>
                         </div>
                     </div>
@@ -496,8 +509,51 @@
                         </svg>
                     </button>
                 </div>
+
+                <!-- ===== CATEGORY DEMOS (bukan client project, murni skill showcase) ===== -->
+                <div class="section-head reveal" style="margin-top:80px;">
+                    <span class="eyebrow">Skill Showcase</span>
+                    <h2 class="section-title">Category Demos</h2>
+                    <p class="section-sub">Contoh implementasi per kategori — bukan proyek client, murni demo teknis
+                        untuk menunjukkan kemampuan tim.</p>
+                </div>
+
+                <div class="works-filter reveal"id="demoFilterTabs" role="tablist" aria-label="Filter demo berdasarkan kategori">
+                    <button class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+                    <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">Web Dev</button>
+                    <button class="filter-btn" data-filter="mobile" role="tab" aria-selected="false">Mobile App</button>
+                    <button class="filter-btn" data-filter="ai" role="tab" aria-selected="false">AI &
+                        Automation</button>
+                    <button class="filter-btn" data-filter="cyber" role="tab" aria-selected="false">Cyber
+                        Security</button>
+                </div>
+
+                <div class="works-grid" id="demoGrid">
+                    <!--  -->
+                    <div class="work-card reveal" data-category="web">
+                        <img src="asset/p1.webp" alt="Web Dev demo preview" width="1000" height="452" loading="lazy"
+                            decoding="async" />
+                        <div class="work-overlay">
+                            <span class="work-tag work-tag--demo">Demo — Web Dev</span>
+                            <h3>Nama Demo Web</h3>
+                            <a href="#" class="work-link" target="_blank" rel="noopener" aria-label="View demo">View
+                                Demo <svg class="ic" width="14" height="14">
+                                    <use href="#ic-arrow-right" /></svg></a>
+                        </div>
+                    </div>
+                    <!--  -->
+                </div>
+                <div class="works-more" id="demoMore" hidden>
+                    <button class="btn btn-ghost" id="demoToggleBtn" aria-expanded="false">
+                        <span class="worksToggleLabel">Show More</span>
+                        <svg class="ic worksToggleIcon" width="14" height="14">
+                            <use href="#ic-chevron" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </section>
+
         <!-- ===== DEVELOPMENT PROCESS ===== -->
         <section class="section--dark" id="process">
             <div class="grid-backdrop"></div>

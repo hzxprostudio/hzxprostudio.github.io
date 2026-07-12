@@ -99,32 +99,44 @@ faqItems.forEach(item => {
     });
 });
 
-// FEATURED WORKS — Show More / Show Less
-// Desktop/tablet shows 6 projects initially, mobile (<=720px) shows 3.
+// FEATURED WORKS — Filter + Show More / Show Less
 (function () {
     const worksGrid = document.querySelector('.works-grid');
     const worksMore = document.getElementById('worksMore');
     const worksToggleBtn = document.getElementById('worksToggleBtn');
+    const filterBtns = document.querySelectorAll('#projectFilterTabs .filter-btn');
     if (!worksGrid || !worksMore || !worksToggleBtn) return;
 
-    const workCards = Array.from(worksGrid.querySelectorAll('.work-card'));
+    const allCards = Array.from(worksGrid.querySelectorAll('.work-card'));
     const toggleLabel = worksToggleBtn.querySelector('.worksToggleLabel');
     const mobileQuery = window.matchMedia('(max-width: 720px)');
     let expanded = false;
+    let activeFilter = 'all';
 
     const getLimit = () => (mobileQuery.matches ? 3 : 6);
 
+    function getFilteredCards() {
+        return activeFilter === 'all'
+            ? allCards
+            : allCards.filter(card => card.dataset.category === activeFilter);
+    }
+
     function render() {
         const limit = getLimit();
+        const filtered = getFilteredCards();
 
-        if (workCards.length <= limit) {
+        allCards.forEach(card => {
+            const matches = activeFilter === 'all' || card.dataset.category === activeFilter;
+            card.classList.toggle('work-card-hidden', !matches);
+        });
+
+        if (filtered.length <= limit) {
             worksMore.hidden = true;
-            workCards.forEach(card => card.classList.remove('work-card-hidden'));
             return;
         }
 
         worksMore.hidden = false;
-        workCards.forEach((card, i) => {
+        filtered.forEach((card, i) => {
             card.classList.toggle('work-card-hidden', !(expanded || i < limit));
         });
 
@@ -133,18 +145,105 @@ faqItems.forEach(item => {
         worksToggleBtn.setAttribute('aria-expanded', String(expanded));
     }
 
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeFilter = btn.dataset.filter;
+            expanded = false;
+
+            filterBtns.forEach(b => {
+                b.classList.remove('is-active');
+                b.setAttribute('aria-selected', 'false');
+            });
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-selected', 'true');
+
+            render();
+        });
+    });
+
     worksToggleBtn.addEventListener('click', () => {
         expanded = !expanded;
         render();
         if (!expanded) {
-            worksGrid.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+            worksGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     });
 
-    // Re-evaluate the limit when crossing the mobile breakpoint (resize/rotate)
+    window.addEventListener('resize', render);
+
+    render();
+})();
+
+// CATEGORY DEMOS — Filter + Show More / Show Less
+(function () {
+    const demoGrid = document.getElementById('demoGrid');
+    const demoMore = document.getElementById('demoMore');
+    const demoToggleBtn = document.getElementById('demoToggleBtn');
+    const filterBtns = document.querySelectorAll('#demoFilterTabs .filter-btn');
+    if (!demoGrid || !demoMore || !demoToggleBtn) return;
+
+    const allCards = Array.from(demoGrid.querySelectorAll('.work-card'));
+    const toggleLabel = demoToggleBtn.querySelector('.worksToggleLabel');
+    const mobileQuery = window.matchMedia('(max-width: 720px)');
+    let expanded = false;
+    let activeFilter = 'all';
+
+    const getLimit = () => (mobileQuery.matches ? 3 : 6);
+
+    function getFilteredCards() {
+        return activeFilter === 'all'
+            ? allCards
+            : allCards.filter(card => card.dataset.category === activeFilter);
+    }
+
+    function render() {
+        const limit = getLimit();
+        const filtered = getFilteredCards();
+
+        allCards.forEach(card => {
+            const matches = activeFilter === 'all' || card.dataset.category === activeFilter;
+            card.classList.toggle('work-card-hidden', !matches);
+        });
+
+        if (filtered.length <= limit) {
+            demoMore.hidden = true;
+            return;
+        }
+
+        demoMore.hidden = false;
+        filtered.forEach((card, i) => {
+            card.classList.toggle('work-card-hidden', !(expanded || i < limit));
+        });
+
+        toggleLabel.textContent = expanded ? 'Show Less' : 'Show More';
+        demoToggleBtn.classList.toggle('is-open', expanded);
+        demoToggleBtn.setAttribute('aria-expanded', String(expanded));
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeFilter = btn.dataset.filter;
+            expanded = false;
+
+            filterBtns.forEach(b => {
+                b.classList.remove('is-active');
+                b.setAttribute('aria-selected', 'false');
+            });
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-selected', 'true');
+
+            render();
+        });
+    });
+
+    demoToggleBtn.addEventListener('click', () => {
+        expanded = !expanded;
+        render();
+        if (!expanded) {
+            demoGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+
     window.addEventListener('resize', render);
 
     render();
