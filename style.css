@@ -1198,6 +1198,157 @@ section {
     grid-template-columns: repeat(3, 1fr);
 }
 
+/* ===== NAV DROPDOWN — "Works" / "Process" / "About" ===== */
+.nav-dropdown-wrap {
+    position: relative;
+}
+
+.nav-dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    font-size: 0.93rem;
+    font-weight: 500;
+    color: var(--ink);
+    padding: 4px 0;
+    position: relative;
+}
+
+.nav-dropdown-toggle::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width .3s var(--ease);
+}
+
+.nav-dropdown-wrap:hover .nav-dropdown-toggle::after,
+.nav-dropdown-toggle[aria-expanded="true"]::after {
+    width: 100%;
+}
+
+/* Panah — animasi bounce pas hover / kebuka */
+.chevron-mini {
+    transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), color .25s ease;
+}
+
+.nav-dropdown-wrap:hover .chevron-mini,
+.nav-dropdown-toggle[aria-expanded="true"] .chevron-mini {
+    transform: rotate(180deg);
+    color: var(--accent);
+}
+
+/* Sedikit "nudge" pas awal hover sebelum muter — kesan lebih hidup */
+.nav-dropdown-wrap:hover .nav-dropdown-toggle .chevron-mini {
+    animation: chevronNudge .45s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+@keyframes chevronNudge {
+    0% { transform: rotate(0deg) translateY(0); }
+    40% { transform: rotate(60deg) translateY(2px); }
+    100% { transform: rotate(180deg) translateY(0); }
+}
+
+/* Layer luar — nempel LANGSUNG ke tombol, TANPA gap.
+   Jarak visual dipindah ke padding-top di dalam, biar hover-area tetap nyambung
+   dan gak "putus" pas mouse lewat celah kosong. */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+    z-index: 10;
+}
+
+.nav-dropdown.open,
+.nav-dropdown-wrap:hover .nav-dropdown {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Layer dalam — ini yang punya tampilan visual (card putih + shadow) */
+.nav-dropdown-inner {
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid var(--line-on-light);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 24px 48px -20px rgba(10, 10, 10, .25);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transform-origin: top center;
+    transform: translateY(-8px) scale(.96);
+    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.nav-dropdown.open .nav-dropdown-inner,
+.nav-dropdown-wrap:hover .nav-dropdown-inner {
+    transform: translateY(0) scale(1);
+}
+
+.nav-dropdown-inner a {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    transition: background .2s ease, padding-left .2s ease;
+}
+
+.nav-dropdown-inner a:hover {
+    background: var(--paper-soft);
+    padding-left: 18px;
+}
+
+/* Mobile: dropdown jadi accordion inline, bukan overlay absolute */
+@media (max-width: 720px) {
+    .nav-dropdown-wrap {
+        width: 100%;
+    }
+
+    .nav-dropdown-toggle {
+        width: 100%;
+        justify-content: space-between;
+        font-size: 1.05rem;
+    }
+
+    .nav-dropdown {
+        position: static;
+        transform: none;
+        padding-top: 0;
+        opacity: 1;
+        pointer-events: auto;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .3s var(--ease);
+    }
+
+    .nav-dropdown.open {
+        max-height: 300px;
+    }
+
+    .nav-dropdown-inner {
+        background: var(--paper-soft);
+        border: none;
+        box-shadow: none;
+        margin-top: 8px;
+        transform: none;
+    }
+}
+
 /* =========================================================
    PROCESS — dark timeline
 ========================================================= */

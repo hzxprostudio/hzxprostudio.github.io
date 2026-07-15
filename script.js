@@ -89,6 +89,49 @@ window.addEventListener('resize', () => {
     if (window.innerWidth > 720) closeMenu();
 });
 
+// NAVBAR DROPDOWNS — Works, Process, About
+(function () {
+    const wraps = document.querySelectorAll('.nav-dropdown-wrap');
+    if (!wraps.length) return;
+
+    function closeAll(except) {
+        wraps.forEach(wrap => {
+            if (wrap === except) return;
+            const toggle = wrap.querySelector('.nav-dropdown-toggle');
+            const dropdown = wrap.querySelector('.nav-dropdown');
+            dropdown.classList.remove('open');
+            toggle.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    wraps.forEach(wrap => {
+        const toggle = wrap.querySelector('.nav-dropdown-toggle');
+        const dropdown = wrap.querySelector('.nav-dropdown');
+        if (!toggle || !dropdown) return;
+
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = dropdown.classList.contains('open');
+            closeAll(wrap);
+            dropdown.classList.toggle('open', !isOpen);
+            toggle.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        dropdown.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => closeAll());
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        const clickedInsideAny = Array.from(wraps).some(wrap => wrap.contains(e.target));
+        if (!clickedInsideAny) closeAll();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAll();
+    });
+})();
+
 // FAQ ACCORDION — only one item open at a time
 const faqItems = document.querySelectorAll('.faq-item');
 faqItems.forEach(item => {

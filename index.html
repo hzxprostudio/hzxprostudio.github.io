@@ -235,9 +235,55 @@
             <a href="index.html" class="logo"></span>HZXPro</a>
             <div class="nav-links" id="navLinks">
                 <a href="#services">Services</a>
-                <a href="#works">Works</a>
-                <a href="#process">Process</a>
-                <a href="#about">About</a>
+
+                <div class="nav-dropdown-wrap">
+                    <button type="button" class="nav-dropdown-toggle" aria-expanded="false"
+                        aria-controls="worksDropdown">
+                        Works
+                        <svg class="ic chevron-mini" width="12" height="12">
+                            <use href="#ic-chevron" /></svg>
+                    </button>
+                    <div class="nav-dropdown" id="worksDropdown">
+                        <div class="nav-dropdown-inner">
+                            <a href="#works">Featured Projects</a>
+                            <a href="#categoryDemos">Category Demos</a>
+                            <a href="https://hzxprostudio.github.io/DemoAndTamplateHZX/" target="_blank"
+                                rel="noopener">All Demos & Templates ↗</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-dropdown-wrap">
+                    <button type="button" class="nav-dropdown-toggle" aria-expanded="false"
+                        aria-controls="processDropdown">
+                        Process
+                        <svg class="ic chevron-mini" width="12" height="12">
+                            <use href="#ic-chevron" /></svg>
+                    </button>
+                    <div class="nav-dropdown" id="processDropdown">
+                        <div class="nav-dropdown-inner">
+                            <a href="#process">Development Process</a>
+                            <a href="#testimonials">What Clients Say</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-dropdown-wrap">
+                    <button type="button" class="nav-dropdown-toggle" aria-expanded="false"
+                        aria-controls="aboutDropdown">
+                        About
+                        <svg class="ic chevron-mini" width="12" height="12">
+                            <use href="#ic-chevron" /></svg>
+                    </button>
+                    <div class="nav-dropdown" id="aboutDropdown">
+                        <div class="nav-dropdown-inner">
+                            <a href="#about">About HZXPro</a>
+                            <a href="#founder">Meet the Founder</a>
+                            <a href="#faq">Common Questions</a>
+                        </div>
+                    </div>
+                </div>
+
                 <a href="#pricing">Pricing</a>
                 <a href="#contact" class="nav-cta">Start Project</a>
             </div>
@@ -511,7 +557,7 @@
                 </div>
 
                 <!-- ===== CATEGORY DEMOS (bukan client project, murni skill showcase) ===== -->
-                <div class="section-head reveal" style="margin-top:80px;">
+                <div class="section-head reveal" id="categoryDemos" style="margin-top:80px;">
                     <span class="eyebrow">Skill Showcase</span>
                     <h2 class="section-title">Category Demos and Templates</h2>
                     <p class="section-sub">Category implementation examples — not client projects, purely technical
@@ -544,18 +590,18 @@
                         </div>
                     </div>
 
-                        <div class="work-card reveal" data-category="web">
-                            <img src="asset/demos/pos.png" alt="Web Dev demo preview" width="1000" height="452"
-                                loading="lazy" decoding="async" />
-                            <div class="work-overlay">
-                                <span class="work-tag work-tag--demo">Demo — Web Dev</span>
-                                <h3>POS Demo</h3>
-                                <a href="https://hzx-greedy.github.io/POSDemo" class="work-link" target="_blank"
-                                    rel="noopener" aria-label="View demo">View
-                                    Demo <svg class="ic" width="14" height="14">
-                                        <use href="#ic-arrow-right" /></svg></a>
-                            </div>
+                    <div class="work-card reveal" data-category="web">
+                        <img src="asset/demos/pos.png" alt="Web Dev demo preview" width="1000" height="452"
+                            loading="lazy" decoding="async" />
+                        <div class="work-overlay">
+                            <span class="work-tag work-tag--demo">Demo — Web Dev</span>
+                            <h3>POS Demo</h3>
+                            <a href="https://hzx-greedy.github.io/POSDemo" class="work-link" target="_blank"
+                                rel="noopener" aria-label="View demo">View
+                                Demo <svg class="ic" width="14" height="14">
+                                    <use href="#ic-arrow-right" /></svg></a>
                         </div>
+                    </div>
                 </div>
 
                 <div class="works-more" id="demoMore">
@@ -881,6 +927,7 @@
                         <li><a href="#works">Works</a></li>
                         <li><a href="#about">About</a></li>
                         <li><a href="#process">Process</a></li>
+                        <li><a href="https://hzxprostudio.github.io/DemoAndTamplateHZX/">Demos</a></li>
                     </ul>
                 </div>
                 <div>
