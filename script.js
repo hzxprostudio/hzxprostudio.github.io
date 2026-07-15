@@ -7,42 +7,58 @@ window.addEventListener('scroll', () => {
     scrollProgress.style.width = pct + '%';
 });
 
-// NAVBAR ACTIVE STATE
-const navAnchorLinks = document.querySelectorAll('.nav-links a[href^="#"]:not(.nav-cta)');
+// NAVBAR ACTIVE STATE — grup-based scrollspy
+// Mapping: nav item → section IDs yang jadi tanggung jawabnya
+const NAV_GROUPS = [
+    { type: 'link',     href: '#services',      ids: ['services'] },
+    { type: 'dropdown', ctrl: 'worksDropdown',  ids: ['works', 'categoryDemos'] },
+    { type: 'dropdown', ctrl: 'processDropdown',ids: ['process', 'testimonials'] },
+    { type: 'dropdown', ctrl: 'aboutDropdown',  ids: ['about', 'founder', 'faq'] },
+    { type: 'link',     href: '#pricing',       ids: ['pricing'] },
+    { type: 'link',     href: '#contact',       ids: ['contact'] },
+];
 
-// Bangun daftar section yang valid untuk di-spy (semua section yang punya id)
-const spySections = Array.from(navAnchorLinks)
-    .map(link => document.getElementById(link.getAttribute('href').slice(1)))
-    .filter(Boolean);
+// Kumpulkan semua section yang perlu di-track, beserta grup-nya
+const SPY_SECTIONS = [];
+NAV_GROUPS.forEach(group => {
+    group.ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) SPY_SECTIONS.push({ id, el, group });
+    });
+});
+
+// Urutkan berdasarkan posisi di halaman (bukan urutan nav)
+SPY_SECTIONS.sort((a, b) => a.el.offsetTop - b.el.offsetTop);
 
 let sectionOffsets = [];
-requestAnimationFrame(() => {
-    sectionOffsets = spySections.map(s => ({ id: s.id, offset: s.offsetTop }));
-});
-
-window.addEventListener('resize', () => {
-    sectionOffsets = spySections.map(s => ({ id: s.id, offset: s.offsetTop }));
-});
+function rebuildOffsets() {
+    // Re-sort setiap kali (layout bisa berubah)
+    SPY_SECTIONS.sort((a, b) => a.el.offsetTop - b.el.offsetTop);
+    sectionOffsets = SPY_SECTIONS.map(s => ({ id: s.id, group: s.group, offset: s.el.offsetTop }));
+}
+requestAnimationFrame(rebuildOffsets);
+window.addEventListener('resize', rebuildOffsets);
 
 const setActiveLink = () => {
     window.requestAnimationFrame(() => {
-        // Section dianggap aktif saat sudah masuk 40% dari tinggi layar
         const scrollPos = window.scrollY + window.innerHeight * 0.4;
-        let currentId = null;
 
+        // Cari section terakhir yang offsetTop-nya <= scrollPos
+        let activeGroup = null;
         for (let i = 0; i < sectionOffsets.length; i++) {
-            if (sectionOffsets[i].offset <= scrollPos) currentId = sectionOffsets[i].id;
+            if (sectionOffsets[i].offset <= scrollPos) activeGroup = sectionOffsets[i].group;
         }
 
-        navAnchorLinks.forEach(link => {
-            const href = link.getAttribute('href').slice(1);
-            link.classList.toggle('active', href === currentId);
+        // Update link langsung (Services, Pricing, Contact)
+        NAV_GROUPS.filter(g => g.type === 'link').forEach(g => {
+            const link = document.querySelector(`.nav-links > a[href="${g.href}"]`);
+            if (link) link.classList.toggle('active', g === activeGroup);
         });
 
-        // Highlight dropdown toggle jika child link-nya aktif
-        document.querySelectorAll('.nav-dropdown-wrap').forEach(wrap => {
-            const toggle = wrap.querySelector('.nav-dropdown-toggle');
-            if (toggle) toggle.classList.toggle('has-active', !!wrap.querySelector('a.active'));
+        // Update dropdown toggles (Works, Process, About)
+        NAV_GROUPS.filter(g => g.type === 'dropdown').forEach(g => {
+            const toggle = document.querySelector(`[aria-controls="${g.ctrl}"]`);
+            if (toggle) toggle.classList.toggle('has-active', g === activeGroup);
         });
     });
 };
