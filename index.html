@@ -760,7 +760,7 @@
                             <li><svg class="ic" width="15" height="15">
                                     <use href="#ic-check" /></svg> 2 revisions</li>
                         </ul>
-                        <a href="#contact" class="btn btn-dark">Choose Basic</a>
+                        <a href="#contact" class="btn btn-dark btn-choose-package" data-package="Basic">Choose Basic</a>
                     </div>
                     <div class="price-card featured reveal reveal-d1">
                         <span class="popular-badge"><svg class="ic" width="12" height="12">
@@ -784,7 +784,7 @@
                             <li><svg class="ic" width="15" height="15">
                                     <use href="#ic-check" /></svg> 5 revisions</li>
                         </ul>
-                        <a href="#contact" class="btn btn-primary">Choose Pro</a>
+                        <a href="#contact" class="btn btn-primary btn-choose-package" data-package="Pro">Choose Pro</a>
                     </div>
                     <div class="price-card reveal reveal-d2">
                         <h3>Premium</h3>
@@ -806,7 +806,7 @@
                             <li><svg class="ic" width="15" height="15">
                                     <use href="#ic-check" /></svg> Flexible revisions</li>
                         </ul>
-                        <a href="#contact" class="btn btn-dark">Choose Premium</a>
+                        <a href="#contact" class="btn btn-dark btn-choose-package" data-package="Premium">Choose Premium</a>
                     </div>
                 </div>
             </div>
@@ -892,6 +892,10 @@
                         <input type="email" id="email" placeholder="Email *" required aria-label="Your Email" />
                         <input type="text" id="wa" placeholder="WhatsApp Number (optional)"
                             aria-label="Your WhatsApp Number" />
+
+                        <!-- Selected Package Display -->
+                        <div id="selectedPackageContainer" class="selected-package-container"></div>
+                        <input type="hidden" id="selectedPackage" name="selected_package" />
 
                         <select id="layanan" required aria-label="Choose a service">
                             <option value="">— What can we help you with? —</option>

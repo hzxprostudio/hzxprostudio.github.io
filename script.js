@@ -613,6 +613,9 @@ if (testiTrack && testiViewport && testiCarousel) {
 
 // CONTACT FORM — sends to WhatsApp
 const contactForm = document.getElementById('contactForm');
+const selectedPackageContainer = document.getElementById('selectedPackageContainer');
+const selectedPackageInput = document.getElementById('selectedPackage');
+
 if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -621,18 +624,61 @@ if (contactForm) {
         const wa = document.getElementById('wa').value;
         const layanan = document.getElementById('layanan').value;
         const pesan = document.getElementById('pesan').value;
+        const paket = selectedPackageInput ? selectedPackageInput.value : '';
 
-        const text = `Halo HZXPro, saya ingin konsultasi project.
+        let text = `Halo HZXPro, saya ingin konsultasi project.
 
 Nama: ${nama}
 Email: ${email}
 WA: ${wa}
-Layanan: ${layanan}
+Layanan: ${layanan}`;
 
-Pesan:
+        if (paket) {
+            text += `\nPaket Terpilih: ${paket} Package`;
+        }
+
+        text += `\n\nPesan:
 ${pesan}`;
 
         window.open(`https://wa.me/6282128297825?text=${encodeURIComponent(text)}`, '_blank');
+    });
+}
+
+// PRICING SELECTION INTEGRATION
+const choosePackageBtns = document.querySelectorAll('.btn-choose-package');
+
+if (choosePackageBtns.length && selectedPackageContainer && selectedPackageInput) {
+    choosePackageBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const packageName = this.getAttribute('data-package');
+            
+            // Set input value
+            selectedPackageInput.value = packageName;
+            
+            // Render selected package box
+            selectedPackageContainer.innerHTML = `
+                <div class="selected-package-card">
+                    <div class="package-info">
+                        <span class="package-label">Selected Package</span>
+                        <span class="package-name">${packageName} Package</span>
+                    </div>
+                    <button type="button" class="btn-remove-package" aria-label="Remove package">&times;</button>
+                </div>
+            `;
+            
+            // Show container
+            selectedPackageContainer.classList.add('show');
+            
+            // Add close button listener
+            const removeBtn = selectedPackageContainer.querySelector('.btn-remove-package');
+            if (removeBtn) {
+                removeBtn.addEventListener('click', function () {
+                    selectedPackageInput.value = '';
+                    selectedPackageContainer.innerHTML = '';
+                    selectedPackageContainer.classList.remove('show');
+                });
+            }
+        });
     });
 }
 

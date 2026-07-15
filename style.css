@@ -2136,6 +2136,78 @@ section {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Selected Package Box inside Contact Form */
+.selected-package-container {
+    display: none;
+    margin-bottom: 4px;
+}
+
+.selected-package-container.show {
+    display: block;
+}
+
+.selected-package-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--paper-soft);
+    border: 2px solid var(--accent);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    animation: packageSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.selected-package-card .package-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.selected-package-card .package-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    color: var(--muted-on-light);
+}
+
+.selected-package-card .package-name {
+    font-size: 0.94rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.selected-package-card .btn-remove-package {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--muted-on-light);
+    padding: 4px 8px;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selected-package-card .btn-remove-package:hover {
+    color: #e11d48;
+    transform: scale(1.15);
+}
+
+@keyframes packageSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* =========================================================
    WHATSAPP FLOAT + BACK TO TOP
 ========================================================= */
