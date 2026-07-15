@@ -7,55 +7,47 @@ window.addEventListener('scroll', () => {
     scrollProgress.style.width = pct + '%';
 });
 
-// NAVBAR ACTIVE STATE (Optimized)
-const navAnchorLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+// NAVBAR ACTIVE STATE
+const navAnchorLinks = document.querySelectorAll('.nav-links a[href^="#"]:not(.nav-cta)');
 
-// 1. Ambil semua section dan simpan posisinya dalam array (caching)
+// Bangun daftar section yang valid untuk di-spy (semua section yang punya id)
 const spySections = Array.from(navAnchorLinks)
-    .map(link => document.querySelector(link.getAttribute('href')))
+    .map(link => document.getElementById(link.getAttribute('href').slice(1)))
     .filter(Boolean);
 
 let sectionOffsets = [];
-// Tunda pembacaan offsetTop pertama ke frame berikutnya agar tidak
-// memaksa layout browser di tengah eksekusi script (forced reflow).
 requestAnimationFrame(() => {
-    sectionOffsets = spySections.map(section => ({
-        id: section.id,
-        offset: section.offsetTop
-    }));
+    sectionOffsets = spySections.map(s => ({ id: s.id, offset: s.offsetTop }));
 });
 
-// 2. Fungsi update untuk resize agar offset tetap akurat
 window.addEventListener('resize', () => {
-    sectionOffsets = spySections.map(section => ({
-        id: section.id,
-        offset: section.offsetTop
-    }));
+    sectionOffsets = spySections.map(s => ({ id: s.id, offset: s.offsetTop }));
 });
 
 const setActiveLink = () => {
-    // 3. Gunakan requestAnimationFrame untuk sinkronisasi dengan refresh rate layar
     window.requestAnimationFrame(() => {
-        const scrollPos = window.scrollY + 140;
+        // Section dianggap aktif saat sudah masuk 40% dari tinggi layar
+        const scrollPos = window.scrollY + window.innerHeight * 0.4;
         let currentId = null;
 
-        // 4. Cari section berdasarkan cache, bukan menghitung offsetTop setiap scroll
         for (let i = 0; i < sectionOffsets.length; i++) {
-            if (sectionOffsets[i].offset <= scrollPos) {
-                currentId = sectionOffsets[i].id;
-            }
+            if (sectionOffsets[i].offset <= scrollPos) currentId = sectionOffsets[i].id;
         }
 
         navAnchorLinks.forEach(link => {
-            const isActive = link.getAttribute('href') === '#' + currentId;
-            link.classList.toggle('active', isActive);
+            const href = link.getAttribute('href').slice(1);
+            link.classList.toggle('active', href === currentId);
+        });
+
+        // Highlight dropdown toggle jika child link-nya aktif
+        document.querySelectorAll('.nav-dropdown-wrap').forEach(wrap => {
+            const toggle = wrap.querySelector('.nav-dropdown-toggle');
+            if (toggle) toggle.classList.toggle('has-active', !!wrap.querySelector('a.active'));
         });
     });
 };
 
-window.addEventListener('scroll', setActiveLink, {
-    passive: true
-});
+window.addEventListener('scroll', setActiveLink, { passive: true });
 setActiveLink();
 
 // NAVBAR SCROLL STATE
@@ -66,21 +58,34 @@ window.addEventListener('scroll', () => {
 // HAMBURGER MENU
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
+const navOverlay = document.getElementById('navOverlay');
 
 function openMenu() {
     navLinks.classList.add('open');
     hamburger.classList.add('open');
+    if (navOverlay) {
+        navOverlay.classList.add('show');
+    }
+    document.body.style.overflow = 'hidden';
 }
 
 function closeMenu() {
     navLinks.classList.remove('open');
     hamburger.classList.remove('open');
+    if (navOverlay) {
+        navOverlay.classList.remove('show');
+    }
+    document.body.style.overflow = '';
 }
 hamburger.addEventListener('click', (e) => {
     e.stopPropagation();
     navLinks.classList.contains('open') ? closeMenu() : openMenu();
 });
 navLinks.addEventListener('click', closeMenu);
+// Tap overlay juga tutup menu
+if (navOverlay) {
+    navOverlay.addEventListener('click', closeMenu);
+}
 document.addEventListener('click', (e) => {
     if (!navLinks.classList.contains('open')) return;
     if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) closeMenu();
@@ -94,14 +99,31 @@ window.addEventListener('resize', () => {
     const wraps = document.querySelectorAll('.nav-dropdown-wrap');
     if (!wraps.length) return;
 
+    function openWrap(wrap) {
+        const toggle = wrap.querySelector('.nav-dropdown-toggle');
+        const dropdown = wrap.querySelector('.nav-dropdown');
+        if (!dropdown || !toggle) return;
+        dropdown.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+    }
+
     function closeAll(except) {
         wraps.forEach(wrap => {
             if (wrap === except) return;
             const toggle = wrap.querySelector('.nav-dropdown-toggle');
             const dropdown = wrap.querySelector('.nav-dropdown');
+            if (!dropdown || !toggle) return;
             dropdown.classList.remove('open');
             toggle.setAttribute('aria-expanded', 'false');
         });
+    }
+
+    function closeWrap(wrap) {
+        const toggle = wrap.querySelector('.nav-dropdown-toggle');
+        const dropdown = wrap.querySelector('.nav-dropdown');
+        if (!dropdown || !toggle) return;
+        dropdown.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
     }
 
     wraps.forEach(wrap => {
@@ -109,24 +131,53 @@ window.addEventListener('resize', () => {
         const dropdown = wrap.querySelector('.nav-dropdown');
         if (!toggle || !dropdown) return;
 
+        // Click: toggle buka/tutup
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
             const isOpen = dropdown.classList.contains('open');
             closeAll(wrap);
-            dropdown.classList.toggle('open', !isOpen);
-            toggle.setAttribute('aria-expanded', String(!isOpen));
+            if (isOpen) {
+                closeWrap(wrap);
+            } else {
+                openWrap(wrap);
+            }
         });
 
+        // Desktop hover: buka saat enter, tutup saat leave
+        wrap.addEventListener('mouseenter', () => {
+            if (window.innerWidth <= 720) return;
+            clearTimeout(wrap._leaveTimer);
+            closeAll(wrap);
+            openWrap(wrap);
+        });
+
+        wrap.addEventListener('mouseleave', () => {
+            if (window.innerWidth <= 720) return;
+            wrap._leaveTimer = setTimeout(() => closeWrap(wrap), 120);
+        });
+
+        // Kalau dropdown panel sendiri di-hover, batalkan close timer
+        dropdown.addEventListener('mouseenter', () => {
+            clearTimeout(wrap._leaveTimer);
+        });
+        dropdown.addEventListener('mouseleave', () => {
+            if (window.innerWidth <= 720) return;
+            wrap._leaveTimer = setTimeout(() => closeWrap(wrap), 120);
+        });
+
+        // Klik link di dalam: tutup semua
         dropdown.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => closeAll());
         });
     });
 
+    // Click outside: tutup semua
     document.addEventListener('click', (e) => {
         const clickedInsideAny = Array.from(wraps).some(wrap => wrap.contains(e.target));
         if (!clickedInsideAny) closeAll();
     });
 
+    // Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeAll();
     });

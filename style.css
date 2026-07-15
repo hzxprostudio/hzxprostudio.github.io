@@ -457,6 +457,34 @@ section {
     width: 0%;
 }
 
+/* Mobile nav backdrop overlay */
+.nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 498;
+    opacity: 0;
+    transition: opacity .35s ease;
+}
+
+.nav-overlay.show {
+    opacity: 1;
+}
+
+@media (max-width: 720px) {
+    .nav-overlay {
+        display: block;
+        pointer-events: none;
+    }
+
+    .nav-overlay.show {
+        pointer-events: auto;
+    }
+}
+
 /* =========================================================
    HERO
 ========================================================= */
@@ -1198,7 +1226,7 @@ section {
     grid-template-columns: repeat(3, 1fr);
 }
 
-/* ===== NAV DROPDOWN — "Works" / "Process" / "About" ===== */
+/* ===== NAV DROPDOWN ===== */
 .nav-dropdown-wrap {
     position: relative;
 }
@@ -1206,7 +1234,7 @@ section {
 .nav-dropdown-toggle {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     background: none;
     border: none;
     font: inherit;
@@ -1216,8 +1244,10 @@ section {
     color: var(--ink);
     padding: 4px 0;
     position: relative;
+    transition: color .2s ease;
 }
 
+/* underline accent sama seperti nav link biasa */
 .nav-dropdown-toggle::after {
     content: '';
     position: absolute;
@@ -1229,111 +1259,153 @@ section {
     transition: width .3s var(--ease);
 }
 
-.nav-dropdown-wrap:hover .nav-dropdown-toggle::after,
-.nav-dropdown-toggle[aria-expanded="true"]::after {
+.nav-dropdown-toggle[aria-expanded="true"]::after,
+.nav-dropdown-toggle.has-active::after,
+.nav-dropdown-toggle:hover::after {
     width: 100%;
 }
 
-/* Panah — animasi bounce pas hover / kebuka */
+/* Chevron */
 .chevron-mini {
-    transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), color .25s ease;
+    transition: transform .3s var(--ease), color .2s ease;
 }
 
-.nav-dropdown-wrap:hover .chevron-mini,
 .nav-dropdown-toggle[aria-expanded="true"] .chevron-mini {
     transform: rotate(180deg);
     color: var(--accent);
 }
 
-/* Sedikit "nudge" pas awal hover sebelum muter — kesan lebih hidup */
-.nav-dropdown-wrap:hover .nav-dropdown-toggle .chevron-mini {
-    animation: chevronNudge .45s cubic-bezier(.34, 1.56, .64, 1);
-}
-
-@keyframes chevronNudge {
-    0% { transform: rotate(0deg) translateY(0); }
-    40% { transform: rotate(60deg) translateY(2px); }
-    100% { transform: rotate(180deg) translateY(0); }
-}
-
-/* Layer luar — nempel LANGSUNG ke tombol, TANPA gap.
-   Jarak visual dipindah ke padding-top di dalam, biar hover-area tetap nyambung
-   dan gak "putus" pas mouse lewat celah kosong. */
+/* ── Desktop: card bergaya navbar (putih, kotak, glassmorphism) ── */
 .nav-dropdown {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 14px);
     left: 50%;
-    transform: translateX(-50%);
-    padding-top: 14px;
+    transform: translateX(-50%) translateY(-6px);
+    min-width: 200px;
     opacity: 0;
     pointer-events: none;
-    transition: opacity .2s ease;
-    z-index: 10;
+    transition: opacity .2s ease, transform .22s var(--ease);
+    z-index: 600;
 }
 
-.nav-dropdown.open,
-.nav-dropdown-wrap:hover .nav-dropdown {
+.nav-dropdown.open {
     opacity: 1;
     pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
 }
 
-/* Layer dalam — ini yang punya tampilan visual (card putih + shadow) */
+/* Caret putih di atas card */
+.nav-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, .85);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    z-index: 1;
+}
+
+/* Card bergaya navbar: putih transparan + blur + border tipis */
 .nav-dropdown-inner {
-    min-width: 220px;
-    background: #fff;
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
     border: 1px solid var(--line-on-light);
-    border-radius: var(--radius-sm);
-    box-shadow: 0 24px 48px -20px rgba(10, 10, 10, .25);
-    padding: 8px;
+    border-radius: 0;
+    /* kotak — sesuai navbar */
+    padding: 6px;
     display: flex;
     flex-direction: column;
     gap: 2px;
-    transform-origin: top center;
-    transform: translateY(-8px) scale(.96);
-    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+    box-shadow: 0 8px 32px -8px rgba(10, 10, 10, .18),
+        0 1px 0 0 rgba(255, 255, 255, .6) inset;
+    position: relative;
+    overflow: hidden;
 }
 
-.nav-dropdown.open .nav-dropdown-inner,
-.nav-dropdown-wrap:hover .nav-dropdown-inner {
-    transform: translateY(0) scale(1);
+/* Strip accent kuning tipis di atas card */
+.nav-dropdown-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
 }
 
+/* Link di dalam card */
 .nav-dropdown-inner a {
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    font-size: 0.88rem;
     font-weight: 500;
-    color: var(--ink);
+    color: var(--muted-on-light);
     white-space: nowrap;
-    transition: background .2s ease, padding-left .2s ease;
+    transition: background .18s ease, color .18s ease, padding-left .18s ease;
+}
+
+.nav-dropdown-inner a::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity .18s ease;
 }
 
 .nav-dropdown-inner a:hover {
     background: var(--paper-soft);
+    color: var(--ink);
     padding-left: 18px;
 }
 
-/* Mobile: dropdown jadi accordion inline, bukan overlay absolute */
+.nav-dropdown-inner a:hover::before {
+    opacity: 1;
+}
+
+/* ── Mobile: accordion putih di sidebar putih (kembali seperti semula) ── */
 @media (max-width: 720px) {
     .nav-dropdown-wrap {
         width: 100%;
+        position: relative;
     }
 
     .nav-dropdown-toggle {
         width: 100%;
         justify-content: space-between;
-        font-size: 1.05rem;
+        font-size: 1rem;
+        padding: 0;
     }
 
+    .nav-dropdown-toggle::after {
+        display: none;
+    }
+
+    /* Reset semua desktop style */
     .nav-dropdown {
-        position: static;
-        transform: none;
-        padding-top: 0;
-        opacity: 1;
-        pointer-events: auto;
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        min-width: unset;
         max-height: 0;
         overflow: hidden;
-        transition: max-height .3s var(--ease);
+        transition: max-height .35s var(--ease) !important;
+        z-index: auto;
+    }
+
+    .nav-dropdown::before {
+        display: none;
     }
 
     .nav-dropdown.open {
@@ -1342,10 +1414,34 @@ section {
 
     .nav-dropdown-inner {
         background: var(--paper-soft);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
         border: none;
+        border-radius: 10px;
         box-shadow: none;
+        padding: 6px;
         margin-top: 8px;
-        transform: none;
+        gap: 2px;
+    }
+
+    .nav-dropdown-inner::before {
+        display: none;
+    }
+
+    .nav-dropdown-inner a {
+        color: var(--muted-on-light);
+        font-size: 0.92rem;
+        padding: 9px 12px;
+    }
+
+    .nav-dropdown-inner a:hover {
+        background: rgba(10, 10, 10, .05);
+        color: var(--ink);
+        padding-left: 16px;
+    }
+
+    .nav-dropdown-inner a::before {
+        display: none;
     }
 }
 
@@ -2368,28 +2464,70 @@ section {
         top: 0;
         right: 0;
         height: 100vh;
-        width: min(78vw, 320px);
+        width: min(78vw, 300px);
         background: #fff;
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
-        padding: 100px 32px 40px;
-        gap: 26px;
+        padding: 90px 28px 40px;
+        gap: 20px;
         transform: translateX(100%);
         transition: transform .4s var(--ease);
-        box-shadow: -20px 0 60px -20px rgba(10, 10, 10, .25);
+        box-shadow: -20px 0 60px -20px rgba(10, 10, 10, .2);
+        overflow-y: auto;
+    }
+
+    /* Hapus pseudo header dark */
+    .nav-links::before {
+        display: none;
     }
 
     .nav-links.open {
         transform: translateX(0);
     }
 
+    /* Reset padding dari dark version */
+    .nav-links>* {
+        width: 100%;
+        padding: 0;
+    }
+
     .nav-links a:not(.nav-cta) {
-        font-size: 1.05rem;
+        font-size: 1rem;
+        color: var(--ink);
+        padding: 6px 0;
+        border-radius: 0;
+        display: block;
+        background: none;
+    }
+
+    .nav-links a:not(.nav-cta)::after {
+        display: block;
+    }
+
+    .nav-links a:not(.nav-cta):hover,
+    .nav-links a:not(.nav-cta).active {
+        background: none;
+        color: var(--ink);
+        padding-left: 0;
     }
 
     .nav-cta {
-        margin-top: 8px;
+        margin: 8px 0 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 12px 22px;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 999px;
+    }
+
+    .nav-cta:hover {
+        transform: none;
+        background: var(--accent);
+        color: var(--accent-ink);
     }
 
     .hamburger {

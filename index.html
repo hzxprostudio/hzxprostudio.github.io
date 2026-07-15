@@ -229,6 +229,8 @@
 
     <div class="scroll-progress" id="scrollProgress"></div>
 
+    <div class="nav-overlay" id="navOverlay"></div>
+
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar" id="navbar">
         <div class="container">
@@ -245,10 +247,12 @@
                     </button>
                     <div class="nav-dropdown" id="worksDropdown">
                         <div class="nav-dropdown-inner">
-                            <a href="#works">Featured Projects</a>
-                            <a href="#categoryDemos">Category Demos</a>
-                            <a href="https://hzxprostudio.github.io/DemoAndTamplateHZX/" target="_blank"
-                                rel="noopener">All Demos & Templates ↗</a>
+                            <div class="dropdown-links">
+                                <a href="#works">Featured Projects</a>
+                                <a href="#categoryDemos">Category Demos</a>
+                                <a href="https://hzxprostudio.github.io/DemoAndTamplateHZX/" target="_blank"
+                                    rel="noopener">All Demos & Templates ↗</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -262,8 +266,10 @@
                     </button>
                     <div class="nav-dropdown" id="processDropdown">
                         <div class="nav-dropdown-inner">
-                            <a href="#process">Development Process</a>
-                            <a href="#testimonials">What Clients Say</a>
+                            <div class="dropdown-links">
+                                <a href="#process">Development Process</a>
+                                <a href="#testimonials">What Clients Say</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -277,9 +283,11 @@
                     </button>
                     <div class="nav-dropdown" id="aboutDropdown">
                         <div class="nav-dropdown-inner">
-                            <a href="#about">About HZXPro</a>
-                            <a href="#founder">Meet the Founder</a>
-                            <a href="#faq">Common Questions</a>
+                            <div class="dropdown-links">
+                                <a href="#about">About HZXPro</a>
+                                <a href="#founder">Meet the Founder</a>
+                                <a href="#faq">Common Questions</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -555,9 +563,13 @@
                         </svg>
                     </button>
                 </div>
+            </div>
+        </section>
 
-                <!-- ===== CATEGORY DEMOS (bukan client project, murni skill showcase) ===== -->
-                <div class="section-head reveal" id="categoryDemos" style="margin-top:80px;">
+        <!-- ===== CATEGORY DEMOS ===== -->
+        <section id="categoryDemos">
+            <div class="container">
+                <div class="section-head reveal">
                     <span class="eyebrow">Skill Showcase</span>
                     <h2 class="section-title">Category Demos and Templates</h2>
                     <p class="section-sub">Category implementation examples — not client projects, purely technical
@@ -612,7 +624,9 @@
                         </svg>
                     </a>
                 </div>
+            </div>
         </section>
+
 
         <!-- ===== DEVELOPMENT PROCESS ===== -->
         <section class="section--dark" id="process">
